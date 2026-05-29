@@ -57,8 +57,8 @@ LifeLink is a comprehensive Healthcare Resource Coordination Platform designed t
 ### Option A: Using Docker (Recommended, <30s)
 1. Run `$ docker-compose up --build`
 2. Access the Application:
-   - Frontend: `http://localhost:3000`
-   - Backend:  `http://localhost:5000`
+   - Frontend: local host (if not deployed)
+   - Backend: local host ->
 
 ### Option B: Local Setup (Manual via Node & npm)
 1. Ensure your local MySQL respects `src/config/database.ts` credentials.
