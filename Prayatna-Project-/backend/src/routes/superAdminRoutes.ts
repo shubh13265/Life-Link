@@ -10,8 +10,8 @@ import ResourceSharingRequest from '../models/ResourceSharingRequest';
 
 const router = Router();
 
-const SUPER_ADMIN_USERNAME = 'Sanjay';
-const SUPER_ADMIN_PASSWORD = 'Sanju123';
+const SUPER_ADMIN_USERNAME = 'shubham';
+const SUPER_ADMIN_PASSWORD = 'shubh1234';
 const SUPER_ADMIN_JWT_SECRET =
   process.env.SUPER_ADMIN_JWT_SECRET || process.env.JWT_SECRET || 'LifeLink_super_admin_secret';
 
