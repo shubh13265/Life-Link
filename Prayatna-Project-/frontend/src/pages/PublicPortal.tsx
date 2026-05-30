@@ -655,7 +655,7 @@ export default function PublicPortal() {
         const dLng = (userLoc.lng - data.lng) * Math.PI / 180;
         const a = Math.sin(dLat/2)**2 + Math.cos(userLoc.lat*Math.PI/180)*Math.cos(data.lat*Math.PI/180)*Math.sin(dLng/2)**2;
         const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        if (dist < 200) { setSosStatus('arrived' as any); setSosDriverInfo(prev => prev || data?.driverInfo || null); setSosModalOpen(true); }
+        if (dist < 15) { setSosStatus('arrived' as any); setSosDriverInfo(prev => prev || data?.driverInfo || null); setSosModalOpen(true); }
       }
     };
     // Cross-tab localStorage listener for same-browser arrived notification
