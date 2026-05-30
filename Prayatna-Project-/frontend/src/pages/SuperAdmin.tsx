@@ -375,7 +375,7 @@ export default function SuperAdmin() {
         <div className="p-4 border-t border-teal-800/30">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-violet-600 flex items-center justify-center text-white font-bold text-xs">S</div>
-            <div><p className="text-white text-xs font-bold">Sanjay</p><p className="text-teal-500/50 text-[10px]">Super Admin</p></div>
+            <div><p className="text-white text-xs font-bold">Shubham Kumar</p><p className="text-teal-500/50 text-[10px]">Super Admin</p></div>
           </div>
           <button onClick={logout} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/30 text-rose-400 text-xs font-bold transition-all">
             <LogOut className="w-3.5 h-3.5"/>Logout
