@@ -36,21 +36,6 @@ const INTRO_STYLE = `
   0%,100% { opacity: 0.5; transform: scale(1); }
   50%     { opacity: 1;   transform: scale(1.06); }
 }
-@keyframes truthlens3D {
-  0% {
-    transform: translateZ(-200px) rotateX(30deg) scale(0.5);
-    opacity: 0;
-    text-shadow: 0 1px 0 #0d9488, 0 2px 0 #0f766e, 0 3px 0 #115e59, 0 4px 0 #134e4a, 0 10px 20px rgba(0,0,0,0.5);
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateZ(0) rotateX(0deg) scale(1);
-    opacity: 1;
-    text-shadow: 0 1px 0 #0d9488, 0 2px 0 #0f766e, 0 3px 0 #115e59, 0 4px 0 #134e4a, 0 5px 0 #134e4a, 0 6px 0 #134e4a, 0 15px 30px rgba(0,0,0,0.8);
-  }
-}
 `;
 
 if (typeof document !== 'undefined' && !document.getElementById('ll-intro-styles')) {
@@ -65,8 +50,7 @@ const SESSION_KEY = 'll_intro_done';
 interface Props { onDone: () => void; }
 
 export default function VideoIntro({ onDone }: Props) {
-  const [phase, setPhase] = useState<'video' | 'transition' | 'welcome' | 'done'>('video');
-  const [ripplePos, setRipplePos] = useState({ x: 50, y: 50 });
+  const [phase, setPhase] = useState<'video' | 'text' | 'done'>('video');
   const videoRef = useRef<HTMLVideoElement>(null);
   const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -75,34 +59,20 @@ export default function VideoIntro({ onDone }: Props) {
     if (sessionStorage.getItem(SESSION_KEY)) { onDone(); }
   }, []);
 
-  const startTransition = (e?: any) => {
-    if (phase !== 'video') return;
-    
-    // Capture click position for ripple origin if it was a mouse event
-    if (e && e.clientX) {
-      const rect = e.currentTarget.getBoundingClientRect();
-      setRipplePos({
-        x: ((e.clientX - rect.left) / rect.width)  * 100,
-        y: ((e.clientY - rect.top)  / rect.height) * 100,
-      });
-    }
-
-    setPhase('welcome');
-    // After 4 seconds, call onDone
-    transitionTimer.current = setTimeout(() => {
-      sessionStorage.setItem(SESSION_KEY, '1');
-      setPhase('done');
-      onDone();
-    }, 4000);
-  };
-
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') startTransition();
+      if (e.key === 'Enter' && phase === 'video') {
+        setPhase('text');
+        transitionTimer.current = setTimeout(() => {
+          sessionStorage.setItem(SESSION_KEY, '1');
+          setPhase('done');
+          onDone();
+        }, 4000);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [phase]);
+  }, [phase, onDone]);
 
   useEffect(() => () => { if (transitionTimer.current) clearTimeout(transitionTimer.current); }, []);
 
@@ -110,10 +80,8 @@ export default function VideoIntro({ onDone }: Props) {
 
   return (
     <div
-      onClick={startTransition}
       style={{
         position: 'fixed', inset: 0, zIndex: 99999,
-        cursor: phase === 'video' ? 'pointer' : 'default',
         overflow: 'hidden',
         background: '#000',
       }}
@@ -128,8 +96,9 @@ export default function VideoIntro({ onDone }: Props) {
         playsInline
         style={{
           width: '100%', height: '100%', objectFit: 'cover',
-          animation: phase === 'transition' ? 'llIntroZoom 0.9s ease forwards' : 'none',
           display: 'block',
+          filter: phase === 'text' ? 'brightness(0.3) blur(4px)' : 'none',
+          transition: 'filter 0.5s ease',
         }}
       />
 
@@ -140,79 +109,37 @@ export default function VideoIntro({ onDone }: Props) {
         pointerEvents: 'none',
       }}/>
 
-      {/* Glitch layer on transition */}
-      {phase === 'transition' && (
-        <div style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          backgroundImage: 'url(/intro.mp4)',
-          animation: 'llGlitch1 0.4s steps(1) forwards',
-          mixBlendMode: 'screen',
-          opacity: 0.4,
-        }}/>
-      )}
-
-      {/* Ripple burst at click point */}
-      {phase === 'transition' && (
-        <div style={{
-          position: 'absolute',
-          left: `${ripplePos.x}%`, top: `${ripplePos.y}%`,
-          width: '200px', height: '200px',
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(45,212,191,0.9) 0%, rgba(45,212,191,0) 70%)',
-          animation: 'llRipple 0.8s ease-out forwards',
-          pointerEvents: 'none',
-        }}/>
-      )}
-
-      {/* Scan line on transition */}
-      {phase === 'transition' && (
-        <div style={{
-          position: 'absolute', left: 0, right: 0, height: 3,
-          background: 'linear-gradient(90deg, transparent, rgba(45,212,191,0.9), transparent)',
-          animation: 'llScanLine 0.5s linear forwards',
-          pointerEvents: 'none',
-          boxShadow: '0 0 20px rgba(45,212,191,0.8)',
-        }}/>
-      )}
-
-      {/* White flash overlay */}
-      {(phase === 'transition' || phase === 'welcome') && (
+      {/* 3D Text Reveal */}
+      {phase === 'text' && (
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'rgba(45,212,191,0.15)',
-          animation: 'llIntroFlash 0.9s ease forwards',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
           pointerEvents: 'none',
-        }}/>
-      )}
-
-      {/* 3D Animated Text Overlay */}
-      {phase === 'welcome' && (
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'rgba(0, 0, 0, 0.7)', // dark overlay to focus on text
-          zIndex: 10,
-          animation: 'llFadeInApp 0.5s ease forwards'
+          animation: 'llFadeInApp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
         }}>
           <h1 style={{
-            fontSize: '5rem',
-            fontWeight: 900,
+            fontFamily: 'Impact, sans-serif',
+            fontSize: '5vw',
             color: '#fff',
-            fontFamily: 'sans-serif',
-            textTransform: 'uppercase',
-            letterSpacing: '5px',
-            animation: 'truthlens3D 3.5s ease-out forwards',
-            perspective: '1000px',
-            transformStyle: 'preserve-3d',
+            margin: 0,
+            textShadow: '0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15)',
+            letterSpacing: '4px',
             textAlign: 'center',
-            margin: 0
-          }}>
-            WELCOME TO <span style={{ color: '#2dd4bf' }}>TRUTHLENS</span>
-          </h1>
+          }}>WELCOME TO TRUTHLENS</h1>
+          <h2 style={{
+            fontFamily: 'sans-serif',
+            fontSize: '3vw',
+            color: '#ff4444',
+            margin: '20px 0 0 0',
+            textShadow: '0 1px 0 #aa2222, 0 2px 0 #992222, 0 3px 0 #882222, 0 4px 0 #771111, 0 5px 0 #661111, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25)',
+            textAlign: 'center',
+            fontWeight: 900
+          }}>“ झूठ का परदा फास ”</h2>
         </div>
       )}
 
-      {/* "Click anywhere" hint — only during video */}
+      {/* "Press Enter" hint — only during video */}
       {phase === 'video' && (
         <div style={{
           position: 'absolute', bottom: 48, left: '50%', transform: 'translateX(-50%)',
@@ -239,7 +166,7 @@ export default function VideoIntro({ onDone }: Props) {
             textShadow: '0 2px 12px rgba(0,0,0,0.8)',
             animation: 'llPulseHint 2.2s ease-in-out infinite',
           }}>
-            Press ENTER or Click to start
+            Press ENTER to continue
           </p>
         </div>
       )}

@@ -2,13 +2,13 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap, Tooltip } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { 
-  Building2, 
-  MapPin, 
-  Car, 
-  Phone, 
-  Navigation, 
-  CalendarCheck, 
+import {
+  Building2,
+  MapPin,
+  Car,
+  Phone,
+  Navigation,
+  CalendarCheck,
   BedDouble,
   RefreshCw,
   Search,
@@ -44,12 +44,12 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   const R = 6371;
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
-  const a = 
+  const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
-    Math.sin(dLon / 2) * Math.sin(dLon / 2); 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
-  return R * c; 
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
 }
 
 // Component to dynamically center map when user location or focus changes
@@ -100,9 +100,8 @@ function DoctorAvatar({ initials, status }: { initials: string; status: 'on-duty
         {initials.slice(0, 2)}
       </div>
       <span
-        className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#0a2924] ${
-          status === 'on-duty' ? 'bg-emerald-400' : 'bg-gray-500'
-        }`}
+        className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[#0a2924] ${status === 'on-duty' ? 'bg-emerald-400' : 'bg-gray-500'
+          }`}
       />
     </div>
   );
@@ -291,11 +290,10 @@ function DoctorCard({ doc }: { doc: Doctor }) {
         <p className="text-teal-400 text-[11px] font-semibold truncate">{doc.specialization}</p>
         <p className="text-teal-600/70 text-[10px] mt-0.5 truncate">{doc.qualification} · {doc.experience}y exp</p>
       </div>
-      <span className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
-        doc.status === 'on-duty'
+      <span className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${doc.status === 'on-duty'
           ? 'text-emerald-400 bg-emerald-950/40 border-emerald-800/40'
           : 'text-gray-500 bg-gray-900/40 border-gray-700/40'
-      }`}>
+        }`}>
         {doc.status === 'on-duty' ? 'On Duty' : 'Off Duty'}
       </span>
     </div>
@@ -467,7 +465,7 @@ function CollapsedHospitalCard({
       <div className="flex justify-between items-start mb-3">
         <h3 className="text-base font-extrabold text-[#E2F1E7] group-hover:text-teal-200 transition-colors line-clamp-1">{hospital.name}</h3>
       </div>
-      
+
       <div className="flex items-center justify-between text-[11px] text-teal-200/80 mb-3 pb-3 border-b border-teal-800/40 font-medium">
         <div className="flex bg-rose-950/40 text-rose-300 px-2 py-1 rounded-md border border-rose-900/30 items-center gap-1.5 shadow-sm">
           <MapPin className="w-3 h-3" />
@@ -525,8 +523,8 @@ export default function PublicPortal() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [hospitals, setHospitals] = useState<Hospital[]>([]);
-  
-  const [userLoc, setUserLoc] = useState<{lat: number, lng: number} | null>(null);
+
+  const [userLoc, setUserLoc] = useState<{ lat: number, lng: number } | null>(null);
   const [locating, setLocating] = useState<boolean>(true);
   const [locError, setLocError] = useState<string | null>(null);
 
@@ -534,13 +532,13 @@ export default function PublicPortal() {
   const [expandedHospitalId, setExpandedHospitalId] = useState<string | null>(null);
   const [knowMoreHospital, setKnowMoreHospital] = useState<Hospital | null>(null);
 
-  const [bookingModal, setBookingModal] = useState<{isOpen: boolean, type: 'Appt' | 'Bed' | null, hospital: Hospital | null}>({ isOpen: false, type: null, hospital: null });
+  const [bookingModal, setBookingModal] = useState<{ isOpen: boolean, type: 'Appt' | 'Bed' | null, hospital: Hospital | null }>({ isOpen: false, type: null, hospital: null });
   const [bookingStatus, setBookingStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [bookingForm, setBookingForm] = useState({ patientName: '', patientPhone: '', reason: '' });
 
   const [sosModalOpen, setSosModalOpen] = useState(false);
   const [sosStatus, setSosStatus] = useState<'idle' | 'pending' | 'accepted'>('idle');
-  const [sosDriverInfo, setSosDriverInfo] = useState<{name: string, phone: string, vehicle: string, eta: string} | null>(null);
+  const [sosDriverInfo, setSosDriverInfo] = useState<{ name: string, phone: string, vehicle: string, eta: string } | null>(null);
 
   const [sosForm, setSosForm] = useState({ name: '', condition: '', severity: 'critical', isAccident: false });
 
@@ -604,10 +602,10 @@ export default function PublicPortal() {
       },
       timestamp: new Date().toISOString()
     };
-    
+
     // Local flow 
     localStorage.setItem('lifelink_sos_dispatch', JSON.stringify(newDispatch));
-    
+
     // Broadcast via global backend WebSockets
     socket.emit('sos_dispatch', newDispatch);
 
@@ -630,15 +628,15 @@ export default function PublicPortal() {
     }
   };
 
-  const [driverTrackingLoc, setDriverTrackingLoc] = useState<{lat:number;lng:number}|null>(null);
+  const [driverTrackingLoc, setDriverTrackingLoc] = useState<{ lat: number; lng: number } | null>(null);
 
   // Listen to SOS localStorage changes
   useEffect(() => {
     const handleStorage = (parsed: any) => {
-        if (parsed?.status === 'ACCEPTED' && sosStatus !== 'accepted') {
-          setSosStatus('accepted');
-          setSosDriverInfo(parsed.driverInfo);
-        }
+      if (parsed?.status === 'ACCEPTED' && sosStatus !== 'accepted') {
+        setSosStatus('accepted');
+        setSosDriverInfo(parsed.driverInfo);
+      }
     };
     const localHandle = () => {
       const data = localStorage.getItem('lifelink_sos_dispatch');
@@ -653,9 +651,9 @@ export default function PublicPortal() {
         const R = 6371000;
         const dLat = (userLoc.lat - data.lat) * Math.PI / 180;
         const dLng = (userLoc.lng - data.lng) * Math.PI / 180;
-        const a = Math.sin(dLat/2)**2 + Math.cos(userLoc.lat*Math.PI/180)*Math.cos(data.lat*Math.PI/180)*Math.sin(dLng/2)**2;
-        const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        if (dist < 15) { setSosStatus('arrived' as any); setSosDriverInfo(prev => prev || data?.driverInfo || null); setSosModalOpen(true); }
+        const a = Math.sin(dLat / 2) ** 2 + Math.cos(userLoc.lat * Math.PI / 180) * Math.cos(data.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+        const dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        if (dist < 200) { setSosStatus('arrived' as any); setSosDriverInfo(prev => prev || data?.driverInfo || null); setSosModalOpen(true); }
       }
     };
     // Cross-tab localStorage listener for same-browser arrived notification
@@ -685,13 +683,13 @@ export default function PublicPortal() {
     socket.on('sos_accepted', handleStorage);
     socket.on('ambulance_arrived', handleArrived);
     socket.on('driver_location_update', handleDriverLoc);
-    
+
     return () => {
-        window.removeEventListener('storage', localHandle);
-        window.removeEventListener('storage', localStorageArrivedHandle);
-        socket.off('sos_accepted', handleStorage);
-        socket.off('ambulance_arrived', handleArrived);
-        socket.off('driver_location_update', handleDriverLoc);
+      window.removeEventListener('storage', localHandle);
+      window.removeEventListener('storage', localStorageArrivedHandle);
+      socket.off('sos_accepted', handleStorage);
+      socket.off('ambulance_arrived', handleArrived);
+      socket.off('driver_location_update', handleDriverLoc);
     };
   }, [sosStatus, userLoc]);
 
@@ -732,20 +730,22 @@ export default function PublicPortal() {
       if (!data?.hospitalId || !data?.resources) return;
       setHospitals(prev => prev.map(h =>
         h.id === data.hospitalId
-          ? { ...h, resources: {
+          ? {
+            ...h, resources: {
               icuBeds: data.resources.icuBeds ?? h.resources.icuBeds,
               generalBeds: data.resources.generalBeds ?? h.resources.generalBeds,
               oxygenCylinders: data.resources.oxygenCylinders ?? h.resources.oxygenCylinders,
               ventilators: data.resources.ventilators ?? h.resources.ventilators,
               ambulances: data.resources.ambulances ?? h.resources.ambulances,
               bloodAvailable: data.resources.bloodAvailable ?? h.resources.bloodAvailable,
-            }}
+            }
+          }
           : h
       ));
     };
     const handleLocalInventory = () => {
       const raw = sessionStorage.getItem('lifelink_inventory_update');
-      if (raw) { try { handleInventoryUpdate(JSON.parse(raw)); } catch {} }
+      if (raw) { try { handleInventoryUpdate(JSON.parse(raw)); } catch { } }
     };
     socket.on('hospital_inventory_update', handleInventoryUpdate);
     window.addEventListener('storage', handleLocalInventory);
@@ -820,12 +820,12 @@ export default function PublicPortal() {
 
   const filteredHospitals = useMemo(() => {
     let result = [...hospitals];
-    
+
     if (activeFilter === 'ICU Bed') result = result.filter(h => h.resources.icuBeds > 0);
     else if (activeFilter === 'Oxygen') result = result.filter(h => h.resources.oxygenCylinders > 0);
     else if (activeFilter === 'Blood Bank') result = result.filter(h => h.resources.bloodAvailable !== 'None');
     else if (activeFilter === 'Ambulance') result = result.filter(h => h.resources.ambulances > 0);
-    
+
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
       result = result.filter(h => h.name.toLowerCase().includes(q));
@@ -866,16 +866,15 @@ export default function PublicPortal() {
         <div className="hidden md:flex items-center gap-2">
           {filters.map((f) => (
             <button
-               key={f}
+              key={f}
               onClick={() => {
                 setActiveFilter(activeFilter === f ? null : f);
                 scrollToTop();
               }}
-              className={`px-3 py-1.5 rounded-full text-[13px] font-medium transition-all ${
-                activeFilter === f 
-                  ? 'bg-teal-500 text-white shadow-[0_0_15px_rgba(20,184,166,0.5)]' 
+              className={`px-3 py-1.5 rounded-full text-[13px] font-medium transition-all ${activeFilter === f
+                  ? 'bg-teal-500 text-white shadow-[0_0_15px_rgba(20,184,166,0.5)]'
                   : 'bg-teal-900/40 text-teal-100 hover:bg-teal-800/60 border border-teal-700/50'
-              }`}
+                }`}
             >
               {f}
             </button>
@@ -915,11 +914,10 @@ export default function PublicPortal() {
             ) : (
               <button
                 onClick={() => setSosModalOpen(true)}
-                className={`z-10 flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-sm transition-all hover:scale-[1.02] ${
-                  (sosStatus as any) === 'arrived'
+                className={`z-10 flex items-center gap-2 px-6 py-2.5 rounded-lg font-bold text-sm transition-all hover:scale-[1.02] ${(sosStatus as any) === 'arrived'
                     ? 'bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white shadow-[0_0_20px_rgba(16,185,129,0.5)]'
                     : 'bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white shadow-[0_0_20px_rgba(217,119,6,0.5)] animate-pulse'
-                }`}
+                  }`}
               >
                 {(sosStatus as any) === 'arrived'
                   ? <><CheckCircle className="w-4 h-4" />🚑 Arrived</>
@@ -938,15 +936,15 @@ export default function PublicPortal() {
                 <p className="text-sm">For accurate emergency dispatch route calculation.</p>
               </div>
             ) : userLoc && (
-              <MapContainer 
-                center={[userLoc.lat, userLoc.lng]} 
-                zoom={11} 
+              <MapContainer
+                center={[userLoc.lat, userLoc.lng]}
+                zoom={11}
                 style={{ height: '100%', width: '100%', zIndex: 10 }}
                 zoomControl={false}
               >
-                <MapController 
-                  center={selectedHospital ? [selectedHospital.lat, selectedHospital.lng] : [userLoc.lat, userLoc.lng]} 
-                  zoom={selectedHospital ? 14 : 11} 
+                <MapController
+                  center={selectedHospital ? [selectedHospital.lat, selectedHospital.lng] : [userLoc.lat, userLoc.lng]}
+                  zoom={selectedHospital ? 14 : 11}
                 />
                 <TileLayer
                   attribution='&copy; <a href="https://www.google.com/maps">Google Maps</a>'
@@ -975,9 +973,9 @@ export default function PublicPortal() {
                       <div className="font-bold text-white mb-1">{hospital.name}</div>
                       <div className="text-xs font-semibold text-teal-300 mb-0.5">~{hospital.distance} km away</div>
                       <div className="text-xs text-rose-400 font-bold mb-2">Drive Time: {hospital.driveTime} min</div>
-                      <button 
-                         onClick={() => handleNavigate(hospital)}
-                         className="w-full py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded text-xs transition-colors"
+                      <button
+                        onClick={() => handleNavigate(hospital)}
+                        className="w-full py-1.5 bg-rose-600 hover:bg-rose-500 text-white rounded text-xs transition-colors"
                       >
                         Start Navigation
                       </button>
@@ -1004,7 +1002,7 @@ export default function PublicPortal() {
         <div className="w-full lg:w-[420px] lg:flex-1 shrink-0 pb-2 flex flex-col h-full rounded-xl min-h-0">
           <div className="flex items-center justify-between mb-2 px-1">
             <h2 className="text-lg font-bold text-white">Facilities Near You</h2>
-            <button 
+            <button
               onClick={() => {
                 setSearchQuery('');
                 setActiveFilter(null);
@@ -1020,9 +1018,9 @@ export default function PublicPortal() {
 
           <div className="mb-3 relative shrink-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-teal-500/80" />
-            <input 
-              type="text" 
-              placeholder="Search hospitals..." 
+            <input
+              type="text"
+              placeholder="Search hospitals..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-[#0C322C] border border-teal-800/40 text-teal-50 px-9 py-2.5 rounded-lg outline-none focus:border-teal-500/60 focus:ring-1 focus:ring-teal-500/60 transition-all placeholder:text-teal-600 shadow-inner text-sm"
@@ -1064,11 +1062,11 @@ export default function PublicPortal() {
           <div className="bg-gradient-to-br from-rose-950 to-[#0A1A17] border border-rose-800 shadow-2xl rounded-2xl w-full max-w-lg overflow-hidden shadow-[0_0_50px_rgba(225,29,72,0.2)]">
             <div className="bg-rose-600 px-6 py-4 flex items-center justify-between">
               <h2 className="text-xl font-extrabold text-white tracking-widest uppercase flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5"/> Emergency SOS
+                <AlertTriangle className="w-5 h-5" /> Emergency SOS
               </h2>
-              <button onClick={() => setSosModalOpen(false)} className="text-rose-200 hover:text-white"><X className="w-5 h-5"/></button>
+              <button onClick={() => setSosModalOpen(false)} className="text-rose-200 hover:text-white"><X className="w-5 h-5" /></button>
             </div>
-            
+
             <div className="p-6 space-y-4">
 
               {/* SOS Status Progress Bar — shown during pending/accepted/arrived */}
@@ -1077,12 +1075,12 @@ export default function PublicPortal() {
                   {/* Stage labels */}
                   <div className="flex justify-between mb-2">
                     {[
-                      { key: 'pending',  label: 'SOS Sent',     icon: '📡' },
-                      { key: 'accepted', label: 'Driver Found',  icon: '🚑' },
-                      { key: 'enroute',  label: 'En Route',      icon: '🛣️' },
-                      { key: 'arrived',  label: 'Arrived',       icon: '✅' },
+                      { key: 'pending', label: 'SOS Sent', icon: '📡' },
+                      { key: 'accepted', label: 'Driver Found', icon: '🚑' },
+                      { key: 'enroute', label: 'En Route', icon: '🛣️' },
+                      { key: 'arrived', label: 'Arrived', icon: '✅' },
                     ].map((stage, idx) => {
-                      const stageOrder = ['pending','accepted','enroute','arrived'];
+                      const stageOrder = ['pending', 'accepted', 'enroute', 'arrived'];
                       const currentOrder = sosStatus === 'pending' ? 0 : sosStatus === 'accepted' ? 1 : (sosStatus as any) === 'enroute' ? 2 : (sosStatus as any) === 'arrived' ? 3 : 0;
                       const isActive = idx <= currentOrder;
                       return (
@@ -1130,20 +1128,20 @@ export default function PublicPortal() {
                 <>
                   <div>
                     <label className="block text-rose-200 text-xs font-bold uppercase tracking-wider mb-2">Patient Name</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={sosForm.name}
-                      onChange={e => setSosForm(prev => ({...prev, name: e.target.value}))}
+                      onChange={e => setSosForm(prev => ({ ...prev, name: e.target.value }))}
                       className="w-full bg-[#05110E] border border-rose-900/50 rounded-lg px-4 py-3 text-white focus:border-rose-500 focus:outline-none"
                       placeholder="e.g. Rahul Verma"
                     />
                   </div>
                   <div>
                     <label className="block text-rose-200 text-xs font-bold uppercase tracking-wider mb-2">Health Issue</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={sosForm.condition}
-                      onChange={e => setSosForm(prev => ({...prev, condition: e.target.value}))}
+                      onChange={e => setSosForm(prev => ({ ...prev, condition: e.target.value }))}
                       className="w-full bg-[#05110E] border border-rose-900/50 rounded-lg px-4 py-3 text-white focus:border-rose-500 focus:outline-none"
                       placeholder="e.g. Cardiac Arrest, Severe Bleeding"
                     />
@@ -1151,9 +1149,9 @@ export default function PublicPortal() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-rose-200 text-xs font-bold uppercase tracking-wider mb-2">Severity</label>
-                      <select 
+                      <select
                         value={sosForm.severity}
-                        onChange={e => setSosForm(prev => ({...prev, severity: e.target.value}))}
+                        onChange={e => setSosForm(prev => ({ ...prev, severity: e.target.value }))}
                         className="w-full bg-[#05110E] border border-rose-900/50 rounded-lg px-4 py-3 text-white focus:border-rose-500 focus:outline-none appearance-none"
                       >
                         <option value="low">Low</option>
@@ -1164,19 +1162,19 @@ export default function PublicPortal() {
                     <div>
                       <label className="block text-rose-200 text-xs font-bold uppercase tracking-wider mb-2">Type</label>
                       <div className="h-[46px] flex items-center gap-3 bg-[#05110E] border border-rose-900/50 rounded-lg px-4">
-                        <input 
-                          type="checkbox" 
+                        <input
+                          type="checkbox"
                           id="accident"
                           checked={sosForm.isAccident}
-                          onChange={e => setSosForm(prev => ({...prev, isAccident: e.target.checked}))}
+                          onChange={e => setSosForm(prev => ({ ...prev, isAccident: e.target.checked }))}
                           className="w-4 h-4 accent-rose-500 rounded border-gray-700 bg-gray-900"
                         />
                         <label htmlFor="accident" className="text-sm font-semibold text-rose-100 cursor-pointer">Road Accident</label>
                       </div>
                     </div>
                   </div>
-                  
-                  <button 
+
+                  <button
                     onClick={submitSosRequest}
                     className="w-full mt-4 bg-rose-600 hover:bg-rose-500 text-white font-extrabold uppercase tracking-widest py-4 rounded-xl shadow-lg shadow-rose-900/50 transition-all flex items-center justify-center gap-2 text-lg active:scale-95"
                   >
@@ -1184,7 +1182,7 @@ export default function PublicPortal() {
                   </button>
                 </>
               )}
-              
+
               {sosStatus === 'pending' && (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 rounded-full border-4 border-t-rose-500 border-rose-950 animate-spin mx-auto mb-6"></div>
@@ -1192,7 +1190,7 @@ export default function PublicPortal() {
                   <p className="text-rose-200 font-medium">Scanning for the nearest available ambulance line... Please hold on.</p>
                 </div>
               )}
-              
+
               {sosStatus === 'accepted' && sosDriverInfo && (
                 <div className="text-center py-6">
                   <div className="w-20 h-20 bg-teal-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-teal-500 shadow-[0_0_30px_rgba(20,184,166,0.3)]">
@@ -1200,10 +1198,10 @@ export default function PublicPortal() {
                   </div>
                   <h3 className="text-2xl font-extrabold text-white mb-2">Ambulance Dispatched!</h3>
                   <p className="text-teal-200 font-medium mb-6">An emergency vehicle is en route to your location.</p>
-                  
+
                   <div className="bg-[#05110E] p-4 rounded-xl border border-teal-900 text-left">
                     <div className="flex items-center gap-3 mb-4 break-all">
-                      <div className="bg-teal-900/50 p-2 rounded-lg"><User className="text-teal-400 w-5 h-5"/></div>
+                      <div className="bg-teal-900/50 p-2 rounded-lg"><User className="text-teal-400 w-5 h-5" /></div>
                       <div>
                         <div className="text-[10px] text-teal-400 uppercase font-bold tracking-widest">Responder</div>
                         <div className="font-bold text-white text-lg">{sosDriverInfo.name}</div>
@@ -1212,11 +1210,11 @@ export default function PublicPortal() {
                     <div className="grid grid-cols-2 gap-3 mb-4">
                       <div>
                         <div className="text-[10px] text-teal-400 uppercase font-bold tracking-widest mb-1">Vehicle</div>
-                        <div className="font-bold text-gray-200 flex items-center gap-2"><Car className="w-4 h-4"/> {sosDriverInfo.vehicle}</div>
+                        <div className="font-bold text-gray-200 flex items-center gap-2"><Car className="w-4 h-4" /> {sosDriverInfo.vehicle}</div>
                       </div>
                       <div>
                         <div className="text-[10px] text-teal-400 uppercase font-bold tracking-widest mb-1">ETA</div>
-                        <div className="font-bold text-gray-200 flex items-center gap-2"><Clock className="w-4 h-4"/> {sosDriverInfo.eta}</div>
+                        <div className="font-bold text-gray-200 flex items-center gap-2"><Clock className="w-4 h-4" /> {sosDriverInfo.eta}</div>
                       </div>
                     </div>
                     <a href={`tel:${sosDriverInfo.phone}`} className="flex items-center justify-center w-full py-3 bg-teal-500 hover:bg-teal-400 text-white rounded-lg font-bold transition-all shadow-lg gap-2 cursor-pointer">
@@ -1224,11 +1222,11 @@ export default function PublicPortal() {
                       Contact Driver
                     </a>
                   </div>
-                  
+
                   <button onClick={() => setSosModalOpen(false)} className="w-full py-3 mt-4 bg-transparent border border-gray-600 text-gray-400 rounded-xl hover:bg-gray-800 hover:text-white transition-all font-bold">
-                     Hide Tracker
-                   </button>
-                  <button onClick={() => {setSosModalOpen(false); setSosStatus('idle');}} className="w-full py-3 mt-2 bg-transparent text-gray-500 hover:text-rose-400 transition-all font-bold text-sm">
+                    Hide Tracker
+                  </button>
+                  <button onClick={() => { setSosModalOpen(false); setSosStatus('idle'); }} className="w-full py-3 mt-2 bg-transparent text-gray-500 hover:text-rose-400 transition-all font-bold text-sm">
                     Done (Reset)
                   </button>
                 </div>
@@ -1290,7 +1288,7 @@ export default function PublicPortal() {
                 <h3 className="text-xl font-bold text-white">
                   {bookingModal.type === 'Appt' ? 'Book Clinical Appointment' : 'Reserve Emergency Bed'}
                 </h3>
-                <button 
+                <button
                   onClick={() => setBookingModal({ isOpen: false, type: null, hospital: null })}
                   className="text-teal-400 hover:text-white transition-colors"
                 >×</button>
@@ -1327,44 +1325,43 @@ export default function PublicPortal() {
               ) : (
                 <div className="flex flex-col gap-3">
                   <label className="text-teal-100 text-sm font-medium">Patient Details</label>
-                  <input 
-                    type="text" 
-                    placeholder="Full Name *" 
+                  <input
+                    type="text"
+                    placeholder="Full Name *"
                     value={bookingForm.patientName}
-                    onChange={(e) => setBookingForm(prev => ({...prev, patientName: e.target.value}))}
+                    onChange={(e) => setBookingForm(prev => ({ ...prev, patientName: e.target.value }))}
                     className="w-full bg-[#071E1A] border border-teal-800/60 rounded-lg px-4 py-2.5 text-white outline-none focus:border-teal-500 placeholder:text-teal-700"
                   />
-                  <input 
-                    type="tel" 
-                    placeholder="Phone Number" 
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
                     value={bookingForm.patientPhone}
-                    onChange={(e) => setBookingForm(prev => ({...prev, patientPhone: e.target.value}))}
+                    onChange={(e) => setBookingForm(prev => ({ ...prev, patientPhone: e.target.value }))}
                     className="w-full bg-[#071E1A] border border-teal-800/60 rounded-lg px-4 py-2.5 text-white outline-none focus:border-teal-500 placeholder:text-teal-700"
                   />
-                  <textarea 
+                  <textarea
                     placeholder={bookingModal.type === 'Appt' ? 'Reason for visit' : 'Medical condition / notes'}
                     value={bookingForm.reason}
-                    onChange={(e) => setBookingForm(prev => ({...prev, reason: e.target.value}))}
+                    onChange={(e) => setBookingForm(prev => ({ ...prev, reason: e.target.value }))}
                     className="w-full bg-[#071E1A] border border-teal-800/60 rounded-lg px-4 py-2.5 text-white outline-none focus:border-teal-500 placeholder:text-teal-700 resize-none h-20"
                   />
-                  
-                  <button 
+
+                  <button
                     onClick={confirmBooking}
                     disabled={!bookingForm.patientName.trim() || bookingStatus === 'loading'}
-                    className={`w-full py-3 rounded-xl font-bold transition-all shadow-lg mt-2 flex justify-center items-center gap-2 ${
-                      bookingStatus === 'loading' 
-                        ? 'bg-teal-700 text-teal-100 cursor-wait' 
+                    className={`w-full py-3 rounded-xl font-bold transition-all shadow-lg mt-2 flex justify-center items-center gap-2 ${bookingStatus === 'loading'
+                        ? 'bg-teal-700 text-teal-100 cursor-wait'
                         : !bookingForm.patientName.trim()
                           ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                          : bookingModal.type === 'Bed' 
-                            ? 'bg-emerald-600 hover:bg-emerald-500 text-white' 
+                          : bookingModal.type === 'Bed'
+                            ? 'bg-emerald-600 hover:bg-emerald-500 text-white'
                             : 'bg-teal-500 hover:bg-teal-400 text-white'
-                    }`}
+                      }`}
                   >
                     {bookingStatus === 'loading' ? (
                       <span className="animate-pulse">Processing Request...</span>
                     ) : (
-                      <>{bookingModal.type === 'Appt' ? <CalendarCheck className="w-5 h-5"/> : <BedDouble className="w-5 h-5"/>} Confirm {bookingModal.type === 'Appt' ? 'Appointment' : 'Reservation'}</>
+                      <>{bookingModal.type === 'Appt' ? <CalendarCheck className="w-5 h-5" /> : <BedDouble className="w-5 h-5" />} Confirm {bookingModal.type === 'Appt' ? 'Appointment' : 'Reservation'}</>
                     )}
                   </button>
                 </div>
