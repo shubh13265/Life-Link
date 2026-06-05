@@ -1,0 +1,42 @@
+# ─── OS & Editor ────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ─── Vite Cache (stray at root) ─────────────────────────────────────────────
+.vite/
+
+# ─── Node ────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ─── Build Outputs ───────────────────────────────────────────────────────────
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# ─── Environment & Secrets ───────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+# Keep the example file:
+!.env.example
+
+# ─── Logs ────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ─── Docker volumes ──────────────────────────────────────────────────────────
+mysql_data/

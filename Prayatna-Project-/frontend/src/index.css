@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#071E1A] text-gray-100;
+  }
+}
+
+/* Global Leaflet CSS Overrides for Dark Theme integration */
+.leaflet-container {
+  background: #e5e5e5 !important; /* Changed to light background for light map */
+}
+
+/* Map tiles visibility restores full colors for realistic look */
+.leaflet-tile-pane {
+  filter: contrast(1.05) saturate(1.1); /* slightly boosted saturation for rich map colors */
+}
+
+/* Custom Tooltip Styling for permanent labels */
+.custom-map-tooltip {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #0F4038 !important;
+  font-weight: 800 !important;
+  font-size: 11px !important;
+  text-shadow: 
+    -1px -1px 0 #fff,  
+     1px -1px 0 #fff,
+    -1px  1px 0 #fff,
+     1px  1px 0 #fff;
+  white-space: nowrap;
+}
+.custom-map-tooltip::before {
+  display: none !important; /* Hide the little triangle pointer of the tooltip */
+}
+
+.leaflet-popup-content-wrapper {
+  background: #0C322C !important;
+  color: #E2F1E7 !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(20, 184, 166, 0.4) !important;
+  padding: 4px;
+}
+
+.leaflet-popup-tip {
+  background: #0C322C !important;
+  border-top: 1px solid rgba(20, 184, 166, 0.4) !important;
+  border-left: 1px solid rgba(20, 184, 166, 0.4) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: #0C322C !important;
+  color: #14B8A6 !important;
+  border-color: rgba(20, 184, 166, 0.4) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #0F4038 !important;
+  color: #fff !important;
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
