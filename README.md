@@ -7,7 +7,7 @@ LifeLink is a comprehensive Healthcare Resource Coordination Platform designed t
 - **Smart Allocation Algorithm:** AI-powered matching system relying on distance, resource availability, and hospital specializations. <100ms decision latency for immediate hospital assignment in emergency SOS scenarios.
 - **Emergency Request System:** Send real-time SOS requests prioritizing required resources, recording patient condition and tracking status interactively.
 - **Real-time Live Tracking & Mapping:** A powerful Leaflet map dashboard used for real-time tracking of emergencies and ambulance locations.
-- **Hospital Management Dashboard:** Complete tracking of incoming patients, ICU bed availability, blood bank stocks, and oxygen cylinders.
+- **Hospital Management Dashboard:** Complete tracking of incoming patients, ICU bed availability, blood bank stocks and oxygen cylinders.
 
 ---
 
