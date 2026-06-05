@@ -243,7 +243,7 @@ export default function AuthPage({ onAuth }: { onAuth: (user: any) => void }) {
   const [error, setError] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
-  const [devOtp, setDevOtp] = useState('');
+
   const [pendingUser, setPendingUser] = useState<any>(null); // user pending location permission
 
   const [form, setForm] = useState<FormData>({
@@ -275,7 +275,7 @@ export default function AuthPage({ onAuth }: { onAuth: (user: any) => void }) {
       else {
         setOtpSent(true);
         startCountdown();
-        if (d.otp) setDevOtp(d.otp); // dev mode OTP
+
       }
     } catch { setError('Network error. Please try again.'); }
     finally { setLoading(false); }
@@ -333,7 +333,7 @@ export default function AuthPage({ onAuth }: { onAuth: (user: any) => void }) {
 
   const switchMode = (m: 'register' | 'login') => {
     setMode(m); setStep(m === 'register' ? 'role' : 'login_phone');
-    setError(''); setOtpSent(false); setDevOtp('');
+    setError(''); setOtpSent(false);
     setForm({ name: '', email: '', phone: '', otp: '', agencyName: '', vehicleNumber: '', licenseNumber: '', hospitalName: '', hospitalCity: '' });
   };
 
@@ -427,19 +427,7 @@ export default function AuthPage({ onAuth }: { onAuth: (user: any) => void }) {
         </div>
         <p className="text-white font-semibold">OTP sent to</p>
         <p className="text-teal-300 font-bold text-lg">+91 {form.phone}</p>
-        {devOtp && (
-          <div className="mt-2 space-y-2">
-            <p className="text-amber-400 text-xs bg-amber-950/30 border border-amber-700/30 rounded-lg px-3 py-1.5">
-              🛠 Dev Mode OTP: <strong>{devOtp}</strong>
-            </p>
-            <button
-              onClick={() => set('otp')(devOtp)}
-              className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold hover:bg-amber-500/20 hover:border-amber-400/50 transition-all hover:scale-[1.02]"
-            >
-              <Zap className="w-3.5 h-3.5" /> Auto-fill OTP
-            </button>
-          </div>
-        )}
+
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -500,19 +488,7 @@ export default function AuthPage({ onAuth }: { onAuth: (user: any) => void }) {
         </div>
         <p className="text-white font-semibold">OTP sent to</p>
         <p className="text-teal-300 font-bold text-lg">+91 {form.phone}</p>
-        {devOtp && (
-          <div className="mt-2 space-y-2">
-            <p className="text-amber-400 text-xs bg-amber-950/30 border border-amber-700/30 rounded-lg px-3 py-1.5">
-              🛠 Dev Mode OTP: <strong>{devOtp}</strong>
-            </p>
-            <button
-              onClick={() => set('otp')(devOtp)}
-              className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold hover:bg-amber-500/20 hover:border-amber-400/50 transition-all hover:scale-[1.02]"
-            >
-              <Zap className="w-3.5 h-3.5" /> Auto-fill OTP
-            </button>
-          </div>
-        )}
+
       </div>
 
       <div className="flex flex-col gap-1.5">

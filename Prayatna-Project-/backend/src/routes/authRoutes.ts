@@ -59,15 +59,15 @@ router.post('/send-otp', async (req: Request, res: Response) => {
     const otp = generateOTP();
     otpStore[phone] = { code: otp, expires: Date.now() + 5 * 60 * 1000 };
     clearOtpSecurityState(phone);
-    console.log(`📱 OTP for ${phone}: ${otp} (Valid for 5 min)`);
+    
+    console.log(`\n========================================`);
+    console.log(`📱 ⚠️ AUTHENTICATION OTP FOR ${phone}: ${otp}`);
+    console.log(`========================================\n`);
 
-    // Always return OTP in response (no SMS provider configured — dev/demo mode)
     res.json({
       success: true,
-      message: 'OTP sent successfully',
-      phone,
-      otp,
-      devMessage: '⚠️ No SMS provider — use this OTP to verify',
+      message: 'OTP sent successfully. Please check your terminal.',
+      phone
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Error sending OTP', error });
