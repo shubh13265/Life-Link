@@ -36,6 +36,21 @@ const INTRO_STYLE = `
   0%,100% { opacity: 0.5; transform: scale(1); }
   50%     { opacity: 1;   transform: scale(1.06); }
 }
+@keyframes truthlens3D {
+  0% {
+    transform: translateZ(-200px) rotateX(30deg) scale(0.5);
+    opacity: 0;
+    text-shadow: 0 1px 0 #0d9488, 0 2px 0 #0f766e, 0 3px 0 #115e59, 0 4px 0 #134e4a, 0 10px 20px rgba(0,0,0,0.5);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateZ(0) rotateX(0deg) scale(1);
+    opacity: 1;
+    text-shadow: 0 1px 0 #0d9488, 0 2px 0 #0f766e, 0 3px 0 #115e59, 0 4px 0 #134e4a, 0 5px 0 #134e4a, 0 6px 0 #134e4a, 0 15px 30px rgba(0,0,0,0.8);
+  }
+}
 `;
 
 if (typeof document !== 'undefined' && !document.getElementById('ll-intro-styles')) {
@@ -50,7 +65,7 @@ const SESSION_KEY = 'll_intro_done';
 interface Props { onDone: () => void; }
 
 export default function VideoIntro({ onDone }: Props) {
-  const [phase, setPhase] = useState<'video' | 'transition' | 'done'>('video');
+  const [phase, setPhase] = useState<'video' | 'transition' | 'welcome' | 'done'>('video');
   const [ripplePos, setRipplePos] = useState({ x: 50, y: 50 });
   const videoRef = useRef<HTMLVideoElement>(null);
   const transitionTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -60,22 +75,34 @@ export default function VideoIntro({ onDone }: Props) {
     if (sessionStorage.getItem(SESSION_KEY)) { onDone(); }
   }, []);
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const startTransition = (e?: any) => {
     if (phase !== 'video') return;
-    // Capture click position for ripple origin
-    const rect = e.currentTarget.getBoundingClientRect();
-    setRipplePos({
-      x: ((e.clientX - rect.left) / rect.width)  * 100,
-      y: ((e.clientY - rect.top)  / rect.height) * 100,
-    });
-    setPhase('transition');
-    // After transition animation completes, call onDone
+    
+    // Capture click position for ripple origin if it was a mouse event
+    if (e && e.clientX) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      setRipplePos({
+        x: ((e.clientX - rect.left) / rect.width)  * 100,
+        y: ((e.clientY - rect.top)  / rect.height) * 100,
+      });
+    }
+
+    setPhase('welcome');
+    // After 4 seconds, call onDone
     transitionTimer.current = setTimeout(() => {
       sessionStorage.setItem(SESSION_KEY, '1');
       setPhase('done');
       onDone();
-    }, 900);
+    }, 4000);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') startTransition();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [phase]);
 
   useEffect(() => () => { if (transitionTimer.current) clearTimeout(transitionTimer.current); }, []);
 
@@ -83,7 +110,7 @@ export default function VideoIntro({ onDone }: Props) {
 
   return (
     <div
-      onClick={handleClick}
+      onClick={startTransition}
       style={{
         position: 'fixed', inset: 0, zIndex: 99999,
         cursor: phase === 'video' ? 'pointer' : 'default',
@@ -149,13 +176,40 @@ export default function VideoIntro({ onDone }: Props) {
       )}
 
       {/* White flash overlay */}
-      {phase === 'transition' && (
+      {(phase === 'transition' || phase === 'welcome') && (
         <div style={{
           position: 'absolute', inset: 0,
           background: 'rgba(45,212,191,0.15)',
           animation: 'llIntroFlash 0.9s ease forwards',
           pointerEvents: 'none',
         }}/>
+      )}
+
+      {/* 3D Animated Text Overlay */}
+      {phase === 'welcome' && (
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'rgba(0, 0, 0, 0.7)', // dark overlay to focus on text
+          zIndex: 10,
+          animation: 'llFadeInApp 0.5s ease forwards'
+        }}>
+          <h1 style={{
+            fontSize: '5rem',
+            fontWeight: 900,
+            color: '#fff',
+            fontFamily: 'sans-serif',
+            textTransform: 'uppercase',
+            letterSpacing: '5px',
+            animation: 'truthlens3D 3.5s ease-out forwards',
+            perspective: '1000px',
+            transformStyle: 'preserve-3d',
+            textAlign: 'center',
+            margin: 0
+          }}>
+            WELCOME TO <span style={{ color: '#2dd4bf' }}>TRUTHLENS</span>
+          </h1>
+        </div>
       )}
 
       {/* "Click anywhere" hint — only during video */}
@@ -185,7 +239,7 @@ export default function VideoIntro({ onDone }: Props) {
             textShadow: '0 2px 12px rgba(0,0,0,0.8)',
             animation: 'llPulseHint 2.2s ease-in-out infinite',
           }}>
-            Click anywhere to enter
+            Press ENTER or Click to start
           </p>
         </div>
       )}
