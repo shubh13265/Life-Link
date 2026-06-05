@@ -310,7 +310,7 @@ export default function HospitalPortal() {
     setSharingLoading(false);
   };
 
-  // ─── Hospital Profile State ───────────────────────────────────────────
+  // ─── Hospital Profile State ──────────────────────
   const [profilePanelOpen, setProfilePanelOpen] = useState(false);
   const [editingProfile, setEditingProfile] = useState(false);
   const [profileSaving, setProfileSaving] = useState(false);

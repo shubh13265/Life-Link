@@ -152,7 +152,7 @@ export default function AmbulancePortal() {
       const dLng = (activeDispatch.loc.lng - driverLoc.lng) * Math.PI / 180;
       const a = Math.sin(dLat/2)**2 + Math.cos(driverLoc.lat*Math.PI/180)*Math.cos(activeDispatch.loc.lat*Math.PI/180)*Math.sin(dLng/2)**2;
       const distMeters = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      if (distMeters < 200) {
+      if (distMeters < 15) {
         if (arrivedTimer.current) return;
         arrivedTimer.current = setTimeout(() => {
           socket.emit('ambulance_arrived', { dispatchId: activeDispatch.id, driverInfo: { name: driver.name, phone: driver.phone, vehicle: driver.vehicle } });
@@ -169,7 +169,7 @@ export default function AmbulancePortal() {
     const dLng0 = (activeDispatch.loc.lng - driverLoc.lng) * Math.PI / 180;
     const a0 = Math.sin(dLat0/2)**2 + Math.cos(driverLoc.lat*Math.PI/180)*Math.cos(activeDispatch.loc.lat*Math.PI/180)*Math.sin(dLng0/2)**2;
     const initDist = R0 * 2 * Math.atan2(Math.sqrt(a0), Math.sqrt(1-a0));
-    if (initDist < 200 && !arrivedTimer.current) {
+    if (initDist < 15 && !arrivedTimer.current) {
       arrivedTimer.current = setTimeout(() => {
         const arrivedPayload = { dispatchId: activeDispatch.id, driverInfo: { name: driver.name, phone: driver.phone, vehicle: driver.vehicle } };
         socket.emit('ambulance_arrived', arrivedPayload);

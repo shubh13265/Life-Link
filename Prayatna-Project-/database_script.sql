@@ -80,4 +80,3 @@ CREATE TABLE IF NOT EXISTS emergency_requests (
   INDEX idx_status (status),
   INDEX idx_hospital (hospitalId)
 );
-
