@@ -17,7 +17,7 @@ LifeLink is a comprehensive Healthcare Resource Coordination Platform designed t
 - **Framework:** React 18.2 with TypeScript for a robust, type-safe interface.
 - **Build Tool:** Vite for lightning-fast builds and HMR.
 - **Styling:** Tailwind CSS intertwined with custom CSS gradients and frosted-glass effects to create an emergency-grade, distinct dark UI, paired alongside Material-UI components.
-- **Mapping:** using google maps api for the maps and livr routes for the public and ambulance .
+- **Mapping:** using google maps api for the maps and live routes for the public and ambulances.
 - **State Management:** Custom React hooks, standard context states + Redux Toolkit.
 - **Networking:** Axios for HTTP REST requests.
 - **Routing:** React Router v6.
